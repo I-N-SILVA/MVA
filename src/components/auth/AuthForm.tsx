@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
+import { getAuthCallbackUrl } from '@/lib/utils/url'
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -105,10 +106,13 @@ export function AuthForm({ mode }: AuthFormProps) {
     setError(null)
 
     try {
+      const redirectUrl = getAuthCallbackUrl()
+      console.log('OAuth redirect URL:', redirectUrl)
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: redirectUrl,
         },
       })
 

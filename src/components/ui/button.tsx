@@ -3,6 +3,7 @@ import { motion, MotionProps } from 'framer-motion'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 import { buttonVariants as animationButtonVariants } from '@/lib/animations'
+import { Slot } from './slot'
 
 const buttonVariants = cva(
   // Base styles with Plyaz design system
@@ -80,8 +81,47 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           whileTap: !isDisabled ? 'tap' : undefined
         }
 
-    // For now, ignore asChild and always render as button to fix the errors
-    // TODO: Implement proper Slot pattern later
+    const buttonContent = loading ? (
+      <div className="flex items-center space-x-2">
+        <motion.div
+          className="w-4 h-4 border-2 border-current border-t-transparent rounded-full"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+        />
+        <span>{loadingText}</span>
+      </div>
+    ) : (
+      <>
+        {children}
+        {/* Ripple effect container */}
+        <motion.div
+          className="absolute inset-0 bg-white rounded-full opacity-0"
+          initial={{ scale: 0, opacity: 0 }}
+          whileTap={{ 
+            scale: 4, 
+            opacity: [0, 0.3, 0],
+            transition: { duration: 0.4 }
+          }}
+          style={{ 
+            mixBlendMode: variant === 'primary' ? 'multiply' : 'normal'
+          }}
+        />
+      </>
+    )
+
+    if (asChild) {
+      return (
+        <Slot
+          className={cn(buttonVariants({ variant, size, rounded, className }))}
+          ref={ref}
+          {...motionProps}
+          {...props}
+        >
+          {children}
+        </Slot>
+      )
+    }
+
     return (
       <motion.button
         className={cn(buttonVariants({ variant, size, rounded, className }))}
@@ -90,33 +130,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...motionProps}
         {...props}
       >
-        {loading ? (
-          <div className="flex items-center space-x-2">
-            <motion.div
-              className="w-4 h-4 border-2 border-current border-t-transparent rounded-full"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-            />
-            <span>{loadingText}</span>
-          </div>
-        ) : (
-          <>
-            {children}
-            {/* Ripple effect container */}
-            <motion.div
-              className="absolute inset-0 bg-white rounded-full opacity-0"
-              initial={{ scale: 0, opacity: 0 }}
-              whileTap={{ 
-                scale: 4, 
-                opacity: [0, 0.3, 0],
-                transition: { duration: 0.4 }
-              }}
-              style={{ 
-                mixBlendMode: variant === 'primary' ? 'multiply' : 'normal'
-              }}
-            />
-          </>
-        )}
+        {buttonContent}
       </motion.button>
     )
   }

@@ -223,13 +223,12 @@ export default function AthletesMarketplacePage() {
             
             {/* Sort */}
             <div className="w-full lg:w-64">
-              <Select value={sortBy} onValueChange={setSortBy}>
-                {SORT_OPTIONS.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </Select>
+              <Select 
+                value={sortBy} 
+                onValueChange={setSortBy}
+                options={SORT_OPTIONS}
+                placeholder="Sort by..."
+              />
             </div>
             
             {/* Filters Toggle */}
@@ -256,36 +255,37 @@ export default function AthletesMarketplacePage() {
                 {/* Sport Filter */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Sport</label>
-                  <Select value={selectedSport} onValueChange={setSelectedSport}>
-                    <option value="">All Sports</option>
-                    {sports.map(sport => (
-                      <option key={sport} value={sport}>{sport}</option>
-                    ))}
-                  </Select>
+                  <Select 
+                    value={selectedSport} 
+                    onValueChange={setSelectedSport}
+                    options={[
+                      { value: "", label: "All Sports" },
+                      ...sports.map(sport => ({ value: sport, label: sport }))
+                    ]}
+                    placeholder="Select sport..."
+                  />
                 </div>
                 
                 {/* Funding Status */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Funding Status</label>
-                  <Select value={fundingStatus} onValueChange={setFundingStatus}>
-                    {FUNDING_STATUS_OPTIONS.map(option => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </Select>
+                  <Select 
+                    value={fundingStatus} 
+                    onValueChange={setFundingStatus}
+                    options={FUNDING_STATUS_OPTIONS}
+                    placeholder="Select status..."
+                  />
                 </div>
                 
                 {/* Career Trajectory */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Career Stage</label>
-                  <Select value={careerTrajectory} onValueChange={setCareerTrajectory}>
-                    {CAREER_TRAJECTORY_OPTIONS.map(option => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </Select>
+                  <Select 
+                    value={careerTrajectory} 
+                    onValueChange={setCareerTrajectory}
+                    options={CAREER_TRAJECTORY_OPTIONS}
+                    placeholder="Select stage..."
+                  />
                 </div>
                 
                 {/* Price Range */}

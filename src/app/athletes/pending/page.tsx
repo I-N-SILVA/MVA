@@ -202,12 +202,12 @@ export default function CommunityVotingPage() {
               <Select
                 value={selectedSport}
                 onValueChange={setSelectedSport}
-              >
-                <option value="">All Sports</option>
-                {sports.map(sport => (
-                  <option key={sport} value={sport}>{sport}</option>
-                ))}
-              </Select>
+                options={[
+                  { value: "", label: "All Sports" },
+                  ...sports.map(sport => ({ value: sport, label: sport }))
+                ]}
+                placeholder="Select sport..."
+              />
             </div>
             
             {/* Status Filter */}
@@ -215,13 +215,9 @@ export default function CommunityVotingPage() {
               <Select
                 value={selectedStatus}
                 onValueChange={setSelectedStatus}
-              >
-                {STATUS_OPTIONS.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </Select>
+                options={STATUS_OPTIONS}
+                placeholder="Select status..."
+              />
             </div>
             
             {/* Sort */}
@@ -229,13 +225,9 @@ export default function CommunityVotingPage() {
               <Select
                 value={sortBy}
                 onValueChange={(value) => setSortBy(value as any)}
-              >
-                {SORT_OPTIONS.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </Select>
+                options={SORT_OPTIONS}
+                placeholder="Sort by..."
+              />
             </div>
           </div>
           
@@ -350,11 +342,13 @@ export default function CommunityVotingPage() {
                       <Select
                         value={pagination.pageSize.toString()}
                         onValueChange={(value) => changePageSize(parseInt(value))}
-                      >
-                        <option value="12">12 per page</option>
-                        <option value="24">24 per page</option>
-                        <option value="48">48 per page</option>
-                      </Select>
+                        options={[
+                          { value: "12", label: "12 per page" },
+                          { value: "24", label: "24 per page" },
+                          { value: "48", label: "48 per page" }
+                        ]}
+                        placeholder="Items per page"
+                      />
                     </div>
                     
                     <div className="flex items-center gap-2">

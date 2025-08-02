@@ -143,6 +143,7 @@ export const useSubmissionStore = create<SubmissionState>()(
         currentStep: state.currentStep,
         isDraft: state.isDraft,
         lastSaved: state.lastSaved
+        // Explicitly exclude: isSubmitting, errors, submitError
       })
     }
   )

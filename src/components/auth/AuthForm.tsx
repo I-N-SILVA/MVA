@@ -115,6 +115,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       if (error) throw error
     } catch (error: any) {
       setError(error.message || 'An error occurred. Please try again.')
+    } finally {
       setIsLoading(false)
     }
   }
@@ -186,11 +187,13 @@ export function AuthForm({ mode }: AuthFormProps) {
                 value={roleValue || ''}
                 onValueChange={(value) => setValue('role' as keyof SignupData, value as any)}
                 error={errors.role?.message}
-              >
-                <option value="">Select your role</option>
-                <option value="scout">Scout - I want to discover and submit athletes</option>
-                <option value="fan">Fan - I want to vote and support athletes</option>
-              </Select>
+                options={[
+                  { value: "", label: "Select your role" },
+                  { value: "scout", label: "Scout - I want to discover and submit athletes" },
+                  { value: "fan", label: "Fan - I want to vote and support athletes" }
+                ]}
+                placeholder="Select your role"
+              />
             </div>
           </>
         )}

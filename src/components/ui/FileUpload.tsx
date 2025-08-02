@@ -69,6 +69,12 @@ const FileUpload: React.FC<FileUploadProps> = ({
     const filePath = `${folderPath}/${fileName}`
 
     return new Promise((resolve, reject) => {
+      // Set up timeout
+      const timeout = 30000 // 30 seconds
+      const timeoutId = setTimeout(() => {
+        reject(new Error('Upload timeout - file upload took too long'))
+      }, timeout)
+
       const upload = supabase.storage
         .from(bucketName)
         .upload(filePath, file, {
@@ -77,8 +83,15 @@ const FileUpload: React.FC<FileUploadProps> = ({
         })
 
       upload.then(({ data, error }) => {
+        clearTimeout(timeoutId)
+        
         if (error) {
-          reject(new Error(error.message))
+          reject(new Error(`Upload failed: ${error.message}`))
+          return
+        }
+
+        if (!data) {
+          reject(new Error('Upload failed: No data returned'))
           return
         }
 
@@ -87,8 +100,16 @@ const FileUpload: React.FC<FileUploadProps> = ({
           .from(bucketName)
           .getPublicUrl(data.path)
 
+        if (!urlData?.publicUrl) {
+          reject(new Error('Failed to get public URL for uploaded file'))
+          return
+        }
+
         resolve(urlData.publicUrl)
-      }).catch(reject)
+      }).catch((error) => {
+        clearTimeout(timeoutId)
+        reject(new Error(`Upload error: ${error.message || 'Unknown upload error'}`))
+      })
     })
   }
 

@@ -167,7 +167,7 @@ const AthleteSubmissionForm: React.FC<AthleteSubmissionFormProps> = ({
     return await trigger(fieldsToValidate)
   }
 
-  const handleSubmit = async (data: AthleteSubmissionData) => {
+  const onSubmit = async (data: AthleteSubmissionData) => {
     try {
       setSubmitting(true)
       clearAllErrors()
@@ -605,7 +605,7 @@ const AthleteSubmissionForm: React.FC<AthleteSubmissionFormProps> = ({
       </div>
 
       {/* Form Content */}
-      <form onSubmit={handleSubmit(handleSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="bg-white p-6 rounded-lg shadow-sm border min-h-[500px]">
           {renderStepContent()}
         </div>

@@ -64,6 +64,8 @@ export async function GET(request: NextRequest) {
   }
 
   // Enhanced error redirect
+  const isLocalEnv = process.env.NODE_ENV === 'development'
+  const forwardedHost = request.headers.get('x-forwarded-host')
   const errorRedirectUrl = isLocalEnv 
     ? `${origin}/auth/auth-code-error`
     : forwardedHost 

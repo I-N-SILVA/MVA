@@ -89,7 +89,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         if (authError) throw authError
 
         if (authData.user && !authData.user.email_confirmed_at) {
-          setSuccess('Please check your email and click the confirmation link to complete your registration.')
+          setSuccess(`Please check your email and click the confirmation link to complete your registration. Email sent to: ${email}`)
         } else {
           router.push('/dashboard')
         }
@@ -167,6 +167,38 @@ export function AuthForm({ mode }: AuthFormProps) {
     }
   }
 
+  const resendConfirmation = async (email: string) => {
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: email,
+      })
+
+      if (error) throw error
+
+      setSuccess('A new confirmation email has been sent. Please check your inbox.')
+    } catch (error: any) {
+      let errorMessage = 'Failed to resend confirmation email. Please try again.'
+      
+      if (error.message) {
+        if (error.message.includes('Email not found')) {
+          errorMessage = 'No account found with this email address.'
+        } else if (error.message.includes('Too many requests')) {
+          errorMessage = 'Too many requests. Please wait a few minutes before trying again.'
+        } else {
+          errorMessage = error.message
+        }
+      }
+      
+      setError(errorMessage)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -195,9 +227,27 @@ export function AuthForm({ mode }: AuthFormProps) {
       {success && (
         <div className="bg-success-light border-2 border-black rounded-lg p-4" role="alert" aria-live="polite">
           <div className="flex">
-            <div className="ml-3">
+            <div className="ml-3 flex-1">
               <h3 className="text-sm font-bold text-black">Success</h3>
               <div className="mt-2 text-sm text-black font-medium">{success}</div>
+              {mode === 'signup' && success.includes('confirmation link') && (
+                <div className="mt-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      const emailField = document.getElementById('email') as HTMLInputElement
+                      if (emailField?.value) {
+                        resendConfirmation(emailField.value)
+                      }
+                    }}
+                    disabled={isLoading}
+                  >
+                    Resend confirmation email
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -257,7 +307,17 @@ export function AuthForm({ mode }: AuthFormProps) {
         </div>
 
         <div>
-          <Label htmlFor="password">Password</Label>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password">Password</Label>
+            {mode === 'login' && (
+              <Link
+                href="/auth/forgot-password"
+                className="text-sm font-medium text-black hover:text-gray-700 underline"
+              >
+                Forgot password?
+              </Link>
+            )}
+          </div>
           <Input
             id="password"
             type="password"

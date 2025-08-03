@@ -1,27 +1,37 @@
 # Vercel Environment Variables Setup
 
-## 🚀 Required Environment Variables for Production
+## 🚀 Authentication Fix Complete - Environment Variables Required
 
-To fix the email confirmation redirect issue, you need to set these environment variables in your Vercel dashboard:
+The authentication system has been completely rebuilt with:
+- ✅ Password reset functionality
+- ✅ Email confirmation flow
+- ✅ Resend confirmation emails
+- ✅ Proper error handling
+- ✅ Fixed profile creation
+
+## **CRITICAL: Set These Environment Variables**
 
 ### **Step 1: Access Vercel Dashboard**
 1. Go to [vercel.com/dashboard](https://vercel.com/dashboard)
-2. Select your project (MVA/plyaz-mvp)
+2. Select your project (plyaz-mvp)
 3. Go to **Settings** → **Environment Variables**
 
 ### **Step 2: Add/Update These Variables**
 
 #### **Production Domain (CRITICAL)**
 ```bash
-NEXT_PUBLIC_APP_URL=https://mva-chi.vercel.app/auth/signup
+NEXT_PUBLIC_APP_URL=https://mva-chi.vercel.app
 ```
-⚠️ **Replace with your actual Vercel domain!**
+✅ **Updated with your actual Vercel domain**
 
 #### **Supabase Configuration**
 ```bash
+# Already configured - verify these are set
 NEXT_PUBLIC_SUPABASE_URL=https://tobgctazftbyunehbznr.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvYmdjdGF6ZnRieXVuZWhiem5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM3Mzc1NTEsImV4cCI6MjA2OTMxMzU1MX0.IIgJaF139YQW_DQ0Ikf83TzQYx5Om-El-5rnQBJiCW0
-SUPABASE_SERVICE_ROLE_KEY=your_actual_service_role_key
+
+# ✅ Service role key configured
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvYmdjdGF6ZnRieXVuZWhiem5yIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzczNzU1MSwiZXhwIjoyMDY5MzEzNTUxfQ.R-43__IDxb8tXM8TQdVNXqOxPsVk-Od70yM4w6XRSQ4
 ```
 
 #### **App Configuration**
@@ -56,28 +66,53 @@ After adding the variables:
 1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
 2. Select your project
 3. Go to **Authentication** → **URL Configuration**
-4. Set **Site URL** to: `https://your-actual-vercel-domain.vercel.app`
+4. Set **Site URL** to: `https://mva-chi.vercel.app`
 
 ### **Step 2: Update Redirect URLs**
-In **Authentication** → **URL Configuration**, add:
-- **Redirect URLs**: `https://your-actual-vercel-domain.vercel.app/auth/callback`
+In **Authentication** → **URL Configuration**, add these redirect URLs:
+```
+https://mva-chi.vercel.app/auth/callback
+https://mva-chi.vercel.app/auth/reset-password
+```
 
-### **Step 3: Email Templates (If Needed)**
+### **Step 3: Email Templates**
 1. Go to **Authentication** → **Email Templates**
-2. Update any hardcoded localhost URLs in templates
-3. Use `{{ .SiteURL }}` for dynamic URLs
+2. **Confirm Signup Template** - make sure redirect URL is: `{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=signup`
+3. **Reset Password Template** - make sure redirect URL is: `{{ .SiteURL }}/auth/reset-password?token_hash={{ .TokenHash }}&type=recovery`
+4. Use `{{ .SiteURL }}` for all dynamic URLs (never hardcode localhost)
 
 ## ✅ Verification Steps
 
 After setup:
-1. ✅ Environment variables are set in Vercel
-2. ✅ Supabase Site URL is updated
-3. ✅ App is redeployed
-4. ✅ Test email confirmation flow
+1. ✅ Environment variables are set in Vercel (especially `NEXT_PUBLIC_APP_URL`)
+2. ✅ Supabase Site URL is updated to production domain
+3. ✅ Supabase redirect URLs include `/auth/callback` and `/auth/reset-password`
+4. ✅ Get real `SUPABASE_SERVICE_ROLE_KEY` from Supabase Dashboard
+5. ✅ Run the database migration: `003_fix_profile_creation.sql`
+6. ✅ App is redeployed
+7. ✅ Test complete authentication flow
 
-## 🎯 Expected Result
+## 🎯 What's Fixed
 
-- ✅ Email confirmations redirect to production domain
-- ✅ No more localhost redirects
-- ✅ Seamless authentication flow
-- ✅ Proper domain handling across all environments
+- ✅ **Password Reset**: Complete forgot password → email → reset flow
+- ✅ **Email Confirmation**: Proper confirmation with resend functionality  
+- ✅ **Profile Creation**: Fixed database trigger for user signup
+- ✅ **Error Handling**: Comprehensive error pages and messages
+- ✅ **Production URLs**: Proper URL handling across environments
+- ✅ **User Experience**: Clear messaging and intuitive flows
+
+## 🧪 Test These Flows
+
+1. **Sign Up**: Create account → receive confirmation email → click link → redirect to dashboard
+2. **Email Confirmation**: Test resend confirmation functionality
+3. **Password Reset**: Request reset → receive email → click link → create new password → login
+4. **Login**: Standard email/password login
+5. **Google OAuth**: Social login flow
+6. **Error Handling**: Invalid links, expired tokens, network errors
+
+## 🚨 Common Issues
+
+- **"localhost" in production emails**: Update `NEXT_PUBLIC_APP_URL` in Vercel
+- **Profile not created**: Run migration `003_fix_profile_creation.sql`
+- **Emails not sending**: Set correct `SUPABASE_SERVICE_ROLE_KEY`
+- **Redirect errors**: Verify Supabase redirect URLs include your domain

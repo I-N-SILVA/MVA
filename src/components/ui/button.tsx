@@ -1,8 +1,6 @@
 import * as React from 'react'
-import { motion, MotionProps } from 'framer-motion'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
-import { buttonVariants as animationButtonVariants } from '@/lib/animations'
 import { Slot } from './slot'
 
 const buttonVariants = cva(
@@ -42,9 +40,8 @@ const buttonVariants = cva(
 )
 
 export interface ButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onAnimationStart' | 'onDrag' | 'onDragEnd' | 'onDragStart'>,
-    VariantProps<typeof buttonVariants>,
-    Omit<MotionProps, 'children'> {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
   asChild?: boolean
   loading?: boolean
   loadingText?: string
@@ -60,7 +57,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     rounded,
     loading = false,
     loadingText = 'Loading...',
-    magnetic = false,
     disabled,
     asChild = false,
     children,
@@ -68,45 +64,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   }, ref) => {
     const isDisabled = disabled || loading
 
-    const motionProps = magnetic 
-      ? {
-          whileHover: { scale: 1.05 },
-          whileTap: { scale: 0.95 },
-          transition: { type: 'spring', stiffness: 400, damping: 30 }
-        }
-      : {
-          variants: animationButtonVariants,
-          initial: 'idle',
-          whileHover: !isDisabled ? 'hover' : undefined,
-          whileTap: !isDisabled ? 'tap' : undefined
-        }
-
     const buttonContent = loading ? (
       <div className="flex items-center space-x-2">
-        <motion.div
-          className="w-4 h-4 border-2 border-current border-t-transparent rounded-full"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-        />
+        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
         <span>{loadingText}</span>
       </div>
     ) : (
-      <>
-        {children}
-        {/* Ripple effect container */}
-        <motion.div
-          className="absolute inset-0 bg-white rounded-full opacity-0"
-          initial={{ scale: 0, opacity: 0 }}
-          whileTap={{ 
-            scale: 4, 
-            opacity: [0, 0.3, 0],
-            transition: { duration: 0.4 }
-          }}
-          style={{ 
-            mixBlendMode: variant === 'primary' ? 'multiply' : 'normal'
-          }}
-        />
-      </>
+      children
     )
 
     if (asChild) {
@@ -114,7 +78,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <Slot
           className={cn(buttonVariants({ variant, size, rounded, className }))}
           ref={ref}
-          {...motionProps}
           {...props}
         >
           {children}
@@ -123,15 +86,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <motion.button
+      <button
         className={cn(buttonVariants({ variant, size, rounded, className }))}
         ref={ref}
         disabled={isDisabled}
-        {...motionProps}
         {...props}
       >
         {buttonContent}
-      </motion.button>
+      </button>
     )
   }
 )

@@ -12,6 +12,12 @@ export const getProductionUrl = (): string => {
     return envUrl
   }
   
+  // Try to detect Vercel deployment URL
+  const vercelUrl = process.env.VERCEL_URL
+  if (vercelUrl) {
+    return `https://${vercelUrl}`
+  }
+  
   // Fallback to default production URL
   return 'https://plyaz-mvp.vercel.app'
 }

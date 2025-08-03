@@ -44,10 +44,10 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
   // Career trajectory styling
   const getTrajectoryColor = (trajectory: string) => {
     switch (trajectory) {
-      case 'rising': return 'bg-green-100 text-green-800'
-      case 'peak': return 'bg-blue-100 text-blue-800'
-      case 'declining': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'rising': return 'bg-black text-white'
+      case 'peak': return 'bg-gray-800 text-white'
+      case 'declining': return 'bg-gray-400 text-black'
+      default: return 'bg-gray-200 text-black'
     }
   }
   
@@ -58,7 +58,7 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
         key={i}
         className={`h-3 w-3 ${
           i < rating 
-            ? 'text-yellow-400 fill-current' 
+            ? 'text-black fill-current' 
             : 'text-gray-300'
         }`}
       />
@@ -70,7 +70,7 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
 
   if (viewMode === 'list') {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
+      <div className="bg-white rounded-lg border-2 border-black p-4 hover:shadow-plyaz-sm transition-all duration-300">
         <div className="flex items-center gap-4">
           {/* Avatar */}
           <div className="flex-shrink-0">
@@ -87,7 +87,7 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
               <div>
                 <Link 
                   href={`/athletes/${athlete.id}`}
-                  className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors"
+                  className="text-lg font-semibold text-black hover:text-gray-700 transition-colors"
                 >
                   {athlete.name}
                 </Link>
@@ -118,11 +118,11 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
           
           {/* Price Info */}
           <div className="flex-shrink-0 text-right">
-            <div className="text-xl font-bold text-gray-900">
+            <div className="text-xl font-bold text-black">
               ${athlete.current_share_price.toFixed(2)}
             </div>
             <div className={`text-sm font-medium flex items-center justify-end gap-1 ${
-              isPositiveChange ? 'text-green-600' : 'text-red-600'
+              isPositiveChange ? 'text-black' : 'text-gray-600'
             }`}>
               {isPositiveChange ? (
                 <TrendingUp className="h-3 w-3" />
@@ -160,7 +160,7 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 group">
+    <div className="bg-white rounded-xl border-2 border-black overflow-hidden hover:shadow-plyaz transition-all duration-300 group">
       {/* Header with Avatar and Basic Info */}
       <div className="p-4 pb-0">
         <div className="flex items-start gap-3">
@@ -173,7 +173,7 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
           <div className="flex-1 min-w-0">
             <Link 
               href={`/athletes/${athlete.id}`}
-              className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors line-clamp-1"
+              className="text-lg font-semibold text-black hover:text-gray-700 transition-colors line-clamp-1"
             >
               {athlete.name}
             </Link>
@@ -232,10 +232,10 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
       </div>
       
       {/* Price and Performance */}
-      <div className="px-4 py-3 border-t border-gray-100">
+      <div className="px-4 py-3 border-t-2 border-gray-200">
         <div className="flex items-center justify-between mb-2">
           <div>
-            <div className="text-xl font-bold text-gray-900">
+            <div className="text-xl font-bold text-black">
               ${athlete.current_share_price.toFixed(2)}
             </div>
             <div className="text-xs text-gray-500">per share</div>
@@ -243,7 +243,7 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
           
           <div className="text-right">
             <div className={`text-sm font-semibold flex items-center gap-1 ${
-              isPositiveChange ? 'text-green-600' : 'text-red-600'
+              isPositiveChange ? 'text-black' : 'text-gray-600'
             }`}>
               {isPositiveChange ? (
                 <TrendingUp className="h-3 w-3" />
@@ -260,13 +260,13 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
         <div className="grid grid-cols-2 gap-3 text-xs">
           <div>
             <span className="text-gray-500">Market Cap</span>
-            <div className="font-medium text-gray-900">
+            <div className="font-medium text-black">
               ${(athlete.market_cap / 1000000).toFixed(1)}M
             </div>
           </div>
           <div>
             <span className="text-gray-500">Volume 24h</span>
-            <div className="font-medium text-gray-900">
+            <div className="font-medium text-black">
               ${athlete.market_data.volume_24h.toLocaleString()}
             </div>
           </div>
@@ -274,10 +274,10 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
       </div>
       
       {/* Funding Progress */}
-      <div className="px-4 py-3 border-t border-gray-100">
+      <div className="px-4 py-3 border-t-2 border-gray-200">
         <div className="flex items-center justify-between text-xs mb-2">
           <span className="text-gray-600">Funding Progress</span>
-          <span className="font-medium text-gray-900">
+          <span className="font-medium text-black">
             ${athlete.total_investments.toLocaleString()} / ${athlete.market_data.funding_goal.toLocaleString()}
           </span>
         </div>
@@ -295,9 +295,9 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
       
       {/* Recent Achievements */}
       {athlete.achievements && athlete.achievements.length > 0 && (
-        <div className="px-4 py-2 border-t border-gray-100">
+        <div className="px-4 py-2 border-t-2 border-gray-200">
           <div className="flex items-start gap-1">
-            <Award className="h-3 w-3 text-yellow-500 mt-0.5 flex-shrink-0" />
+            <Award className="h-3 w-3 text-black mt-0.5 flex-shrink-0" />
             <span className="text-xs text-gray-600 line-clamp-2">
               {athlete.achievements[0]}
             </span>

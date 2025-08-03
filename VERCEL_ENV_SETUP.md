@@ -13,7 +13,7 @@ To fix the email confirmation redirect issue, you need to set these environment 
 
 #### **Production Domain (CRITICAL)**
 ```bash
-NEXT_PUBLIC_APP_URL=https://your-actual-vercel-domain.vercel.app
+NEXT_PUBLIC_APP_URL=https://mva-chi.vercel.app/auth/signup
 ```
 ⚠️ **Replace with your actual Vercel domain!**
 

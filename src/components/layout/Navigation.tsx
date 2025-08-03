@@ -47,16 +47,16 @@ export function Navigation() {
   )
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
+    <nav className="bg-white shadow-plyaz-sm border-b-2 border-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center border-2 border-black shadow-plyaz-sm">
                 <span className="text-white font-bold text-lg">P</span>
               </div>
-              <span className="text-xl font-bold text-gray-900">Plyaz</span>
+              <span className="text-xl font-black text-black">Plyaz</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -66,10 +66,10 @@ export function Navigation() {
                   key={item.name}
                   href={item.href}
                   className={cn(
-                    'inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 transition-colors duration-200',
+                    'inline-flex items-center px-1 pt-1 text-sm font-bold border-b-2 transition-colors duration-200',
                     isActive(item.href)
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                      ? 'border-black text-black'
+                      : 'border-transparent text-gray-600 hover:border-gray-400 hover:text-black'
                   )}
                 >
                   {item.name}
@@ -89,7 +89,7 @@ export function Navigation() {
                 {user && (
                   <div className="flex items-center space-x-3">
                     <div className="text-right">
-                      <p className="text-sm font-medium text-gray-900">
+                      <p className="text-sm font-bold text-black">
                         {user.full_name || user.email}
                       </p>
                       <div className="flex items-center space-x-2">

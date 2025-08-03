@@ -40,11 +40,31 @@ module.exports = {
           900: '#1A1A1A',
         },
         
-        // Semantic Colors (monochrome)
-        success: '#000000',
-        error: '#000000',
-        warning: '#000000',
-        info: '#000000',
+        // Semantic Colors (monochrome variants)
+        success: {
+          DEFAULT: '#000000',
+          light: '#F9F9F9',
+          dark: '#1A1A1A',
+          foreground: '#FFFFFF',
+        },
+        error: {
+          DEFAULT: '#000000',
+          light: '#FEF2F2',
+          dark: '#1A1A1A',
+          foreground: '#FFFFFF',
+        },
+        warning: {
+          DEFAULT: '#525252',
+          light: '#F9F9F9',
+          dark: '#262626',
+          foreground: '#FFFFFF',
+        },
+        info: {
+          DEFAULT: '#737373',
+          light: '#F5F5F5',
+          dark: '#404040',
+          foreground: '#FFFFFF',
+        },
         
         // Interactive States
         hover: '#1A1A1A',

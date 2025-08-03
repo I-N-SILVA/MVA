@@ -162,7 +162,25 @@ export function useAthletes(
       setCurrentPage(page)
 
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch athletes'
+      // Provide user-friendly error messages based on common issues
+      let errorMessage = 'Unable to load athletes. Please try again.'
+      
+      if (err instanceof Error) {
+        if (err.message.includes('Failed to fetch') || err.message.includes('network')) {
+          errorMessage = 'Network connection error. Please check your internet connection and try again.'
+        } else if (err.message.includes('timeout')) {
+          errorMessage = 'Request timed out. Please try again.'
+        } else if (err.message.includes('unauthorized') || err.message.includes('permission')) {
+          errorMessage = 'Access denied. Please sign in and try again.'
+        } else if (err.message.includes('not found')) {
+          errorMessage = 'Athletes data not found. This might be a temporary issue.'
+        } else if (err.message.includes('server') || err.message.includes('500')) {
+          errorMessage = 'Server error occurred. Please try again in a few moments.'
+        } else {
+          errorMessage = err.message
+        }
+      }
+      
       setError(errorMessage)
       console.error('Error fetching athletes:', err)
     } finally {
@@ -255,7 +273,25 @@ export function useAthlete(athleteId: string) {
         }
 
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to fetch athlete'
+        // Provide user-friendly error messages for single athlete fetch
+        let errorMessage = 'Unable to load athlete details. Please try again.'
+        
+        if (err instanceof Error) {
+          if (err.message.includes('Failed to fetch') || err.message.includes('network')) {
+            errorMessage = 'Network connection error. Please check your internet connection and try again.'
+          } else if (err.message.includes('timeout')) {
+            errorMessage = 'Request timed out. Please try again.'
+          } else if (err.message.includes('No rows returned')) {
+            errorMessage = 'Athlete not found. This athlete may have been removed or is no longer available.'
+          } else if (err.message.includes('unauthorized') || err.message.includes('permission')) {
+            errorMessage = 'Access denied. Please sign in and try again.'
+          } else if (err.message.includes('server') || err.message.includes('500')) {
+            errorMessage = 'Server error occurred. Please try again in a few moments.'
+          } else {
+            errorMessage = err.message
+          }
+        }
+        
         setError(errorMessage)
         console.error('Error fetching athlete:', err)
       } finally {

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { PullToRefreshWrapper } from '@/components/ui/pull-to-refresh'
 import { MagneticButton } from '@/components/motion/MagneticButton'
 import { TypewriterText } from '@/components/motion/TypewriterText'
 import { ScrollReveal } from '@/components/motion/ScrollReveal'
@@ -26,6 +27,13 @@ import {
 
 export default function HomePage() {
   const { user, isLoading } = useAuth()
+
+  const handleRefresh = async () => {
+    // Simulate refresh delay
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    // In a real app, you'd refresh data here
+    window.location.reload()
+  }
 
   const features = [
     {
@@ -85,13 +93,14 @@ export default function HomePage() {
   ]
 
   return (
-    <motion.div
-      variants={pageVariants}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      className="min-h-screen bg-white"
-    >
+    <PullToRefreshWrapper onRefresh={handleRefresh}>
+      <motion.div
+        variants={pageVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        className="min-h-screen bg-white dark:bg-black transition-colors duration-200"
+      >
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -105,12 +114,12 @@ export default function HomePage() {
             <motion.div variants={staggerItem} className="mb-8">
               <TypewriterText
                 text="Turn Every Fan Into a Scout"
-                className="text-6xl md:text-8xl font-bold text-black mb-6"
+                className="text-6xl md:text-8xl font-bold text-black dark:text-white mb-6"
                 delay={500}
               />
               <motion.p 
                 variants={staggerItem}
-                className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8"
+                className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-8"
               >
                 Discover, validate, and invest in the next generation of athletic talent through community-driven scouting.
               </motion.p>
@@ -357,6 +366,7 @@ export default function HomePage() {
           </div>
         </section>
       </ScrollReveal>
-    </motion.div>
+      </motion.div>
+    </PullToRefreshWrapper>
   )
 }

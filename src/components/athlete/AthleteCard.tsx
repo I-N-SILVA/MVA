@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -74,9 +75,11 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
         <div className="flex items-center gap-4">
           {/* Avatar */}
           <div className="flex-shrink-0">
-            <img 
+            <Image 
               src={avatarUrl} 
-              alt={athlete.name}
+              alt={`${athlete.name} profile photo`}
+              width={64}
+              height={64}
               className="w-16 h-16 rounded-full object-cover"
             />
           </div>
@@ -142,13 +145,13 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
           {/* Actions */}
           <div className="flex-shrink-0 flex items-center gap-2">
             <Button variant="outline" size="sm" asChild>
-              <Link href={`/athletes/${athlete.id}`}>
+              <Link href={`/athletes/${athlete.id}`} aria-label={`View ${athlete.name}'s profile`}>
                 <Eye className="h-4 w-4 mr-1" />
                 View
               </Link>
             </Button>
             {showQuickInvest && (
-              <Button size="sm">
+              <Button size="sm" aria-label={`Invest in ${athlete.name}`}>
                 <ShoppingCart className="h-4 w-4 mr-1" />
                 Invest
               </Button>
@@ -164,9 +167,11 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
       {/* Header with Avatar and Basic Info */}
       <div className="p-4 pb-0">
         <div className="flex items-start gap-3">
-          <img 
+          <Image 
             src={avatarUrl} 
-            alt={athlete.name}
+            alt={`${athlete.name} profile photo`}
+            width={48}
+            height={48}
             className="w-12 h-12 rounded-full object-cover flex-shrink-0"
           />
           
@@ -309,14 +314,14 @@ export function AthleteCard({ athlete, viewMode = 'grid', showQuickInvest = true
       <div className="p-4 pt-2">
         <div className="flex gap-2">
           <Button variant="outline" size="sm" className="flex-1" asChild>
-            <Link href={`/athletes/${athlete.id}`}>
+            <Link href={`/athletes/${athlete.id}`} aria-label={`View ${athlete.name}'s detailed profile`}>
               <Eye className="h-3 w-3 mr-1" />
               View Details
             </Link>
           </Button>
           
           {showQuickInvest && (
-            <Button size="sm" className="flex-1">
+            <Button size="sm" className="flex-1" aria-label={`Quick invest in ${athlete.name}`}>
               <ShoppingCart className="h-3 w-3 mr-1" />
               Quick Invest
             </Button>

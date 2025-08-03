@@ -95,7 +95,35 @@ export function AuthForm({ mode }: AuthFormProps) {
         }
       }
     } catch (error: any) {
-      setError(error.message || 'An error occurred. Please try again.')
+      // Provide user-friendly error messages based on Supabase error codes
+      let errorMessage = 'An error occurred. Please try again.'
+      
+      if (error.message) {
+        if (error.message.includes('Invalid login credentials')) {
+          errorMessage = 'Invalid email or password. Please check your credentials and try again.'
+        } else if (error.message.includes('User not found')) {
+          errorMessage = 'No account found with this email address. Please check your email or sign up for a new account.'
+        } else if (error.message.includes('Email not confirmed')) {
+          errorMessage = 'Please check your email and click the confirmation link before signing in.'
+        } else if (error.message.includes('Too many requests')) {
+          errorMessage = 'Too many sign-in attempts. Please wait a few minutes before trying again.'
+        } else if (error.message.includes('Password should be at least 6 characters')) {
+          errorMessage = 'Password must be at least 6 characters long.'
+        } else if (error.message.includes('Unable to validate email address')) {
+          errorMessage = 'Please enter a valid email address.'
+        } else if (error.message.includes('User already registered')) {
+          errorMessage = 'An account with this email already exists. Please sign in instead or use a different email.'
+        } else if (error.message.includes('Email link is invalid or has expired')) {
+          errorMessage = 'The confirmation link has expired. Please request a new confirmation email.'
+        } else if (error.message.includes('Network request failed')) {
+          errorMessage = 'Network connection error. Please check your internet connection and try again.'
+        } else {
+          // For any other errors, show the original message but make it user-friendly
+          errorMessage = error.message
+        }
+      }
+      
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -118,7 +146,22 @@ export function AuthForm({ mode }: AuthFormProps) {
 
       if (error) throw error
     } catch (error: any) {
-      setError(error.message || 'An error occurred. Please try again.')
+      // Provide user-friendly error messages for OAuth
+      let errorMessage = 'An error occurred with Google sign-in. Please try again.'
+      
+      if (error.message) {
+        if (error.message.includes('popup_closed_by_user')) {
+          errorMessage = 'Sign-in was cancelled. Please try again if you want to continue.'
+        } else if (error.message.includes('access_denied')) {
+          errorMessage = 'Access was denied. Please grant permission to continue with Google sign-in.'
+        } else if (error.message.includes('network')) {
+          errorMessage = 'Network error occurred. Please check your internet connection and try again.'
+        } else {
+          errorMessage = error.message
+        }
+      }
+      
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -127,10 +170,10 @@ export function AuthForm({ mode }: AuthFormProps) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h1 className="text-3xl font-bold text-black">
           {mode === 'login' ? 'Welcome back' : 'Create your account'}
-        </h2>
-        <p className="mt-2 text-gray-600">
+        </h1>
+        <p className="mt-2 text-gray-600 font-medium">
           {mode === 'login' 
             ? 'Sign in to your account to continue' 
             : 'Join the Plyaz community and start scouting'
@@ -139,22 +182,22 @@ export function AuthForm({ mode }: AuthFormProps) {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-md p-4">
+        <div className="bg-error-light border-2 border-black rounded-lg p-4" role="alert" aria-live="polite">
           <div className="flex">
             <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-800">Error</h3>
-              <div className="mt-2 text-sm text-red-700">{error}</div>
+              <h3 className="text-sm font-bold text-black">Error</h3>
+              <div className="mt-2 text-sm text-black font-medium">{error}</div>
             </div>
           </div>
         </div>
       )}
 
       {success && (
-        <div className="bg-green-50 border border-green-200 rounded-md p-4">
+        <div className="bg-success-light border-2 border-black rounded-lg p-4" role="alert" aria-live="polite">
           <div className="flex">
             <div className="ml-3">
-              <h3 className="text-sm font-medium text-green-800">Success</h3>
-              <div className="mt-2 text-sm text-green-700">{success}</div>
+              <h3 className="text-sm font-bold text-black">Success</h3>
+              <div className="mt-2 text-sm text-black font-medium">{success}</div>
             </div>
           </div>
         </div>
@@ -248,10 +291,10 @@ export function AuthForm({ mode }: AuthFormProps) {
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-300" />
+          <div className="w-full border-t-2 border-gray-300" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-gray-500">Or continue with</span>
+          <span className="px-2 bg-white text-gray-600 font-medium">Or continue with</span>
         </div>
       </div>
 
@@ -288,7 +331,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
           <Link
             href={mode === 'login' ? '/auth/signup' : '/auth/login'}
-            className="font-medium text-blue-600 hover:text-blue-500"
+            className="font-bold text-black hover:text-gray-700 underline"
           >
             {mode === 'login' ? 'Sign up' : 'Sign in'}
           </Link>
@@ -298,11 +341,11 @@ export function AuthForm({ mode }: AuthFormProps) {
       {mode === 'signup' && (
         <div className="text-xs text-gray-500 text-center">
           By signing up, you agree to our{' '}
-          <Link href="/terms" className="text-blue-600 hover:text-blue-500">
+          <Link href="/terms" className="text-black hover:text-gray-700 underline font-medium">
             Terms of Service
           </Link>{' '}
           and{' '}
-          <Link href="/privacy" className="text-blue-600 hover:text-blue-500">
+          <Link href="/privacy" className="text-black hover:text-gray-700 underline font-medium">
             Privacy Policy
           </Link>
         </div>

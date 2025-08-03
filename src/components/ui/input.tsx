@@ -64,6 +64,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {/* Floating Label */}
           {label && floatingLabel && (
             <motion.label
+              htmlFor={props.id}
               className={cn(
                 'absolute left-3 font-medium transition-all duration-200 pointer-events-none z-10 bg-white px-1',
                 shouldFloatLabel
@@ -82,10 +83,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
           {/* Regular Label */}
           {label && !floatingLabel && (
-            <label className={cn(
-              'block text-sm font-medium mb-2 text-black',
-              disabled && 'opacity-50'
-            )}>
+            <label 
+              htmlFor={props.id}
+              className={cn(
+                'block text-sm font-medium mb-2 text-black',
+                disabled && 'opacity-50'
+              )}
+            >
               {label}
             </label>
           )}
@@ -104,7 +108,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <motion.input
             type={type}
             className={cn(
-              'flex h-12 w-full rounded-lg border-2 bg-white px-4 py-2 text-base font-medium transition-all duration-200',
+              'flex h-12 w-full rounded-lg border-2 bg-white px-4 py-2 text-base font-medium transition-all duration-200 min-h-[44px]', // Ensure 44px minimum touch target
               'file:border-0 file:bg-transparent file:text-sm file:font-medium',
               'focus-visible:outline-none focus-visible:ring-0',
               'disabled:cursor-not-allowed disabled:opacity-50',
@@ -131,6 +135,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             variants={inputVariants}
             whileFocus="focus"
             animate={isFocused ? "focus" : "blur"}
+            aria-invalid={error ? 'true' : 'false'}
+            aria-describedby={error ? `${props.id}-error` : undefined}
             {...props}
           />
         </div>
@@ -139,6 +145,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <AnimatePresence mode="wait">
           {error && (
             <motion.p
+              id={`${props.id}-error`}
               className="text-sm font-medium text-black flex items-center space-x-1"
               initial={{ opacity: 0, x: -10, height: 0 }}
               animate={{ opacity: 1, x: 0, height: 'auto' }}
@@ -146,6 +153,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               variants={errorShakeVariants}
               animate="shake"
+              role="alert"
+              aria-live="polite"
             >
               <span className="w-4 h-4 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">
                 !

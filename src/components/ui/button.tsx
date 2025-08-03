@@ -19,11 +19,11 @@ const buttonVariants = cva(
         link: 'bg-transparent text-black underline-offset-4 hover:underline font-medium tracking-normal normal-case',
       },
       size: {
-        sm: 'h-9 px-4 text-sm rounded-md',
-        default: 'h-11 px-6 text-base rounded-lg',
-        lg: 'h-13 px-8 text-lg rounded-lg',
-        xl: 'h-16 px-10 text-xl rounded-xl',
-        icon: 'h-11 w-11 rounded-lg',
+        sm: 'h-11 px-4 text-sm rounded-md min-w-[44px]', // Changed from h-9 to h-11 for minimum touch target
+        default: 'h-11 px-6 text-base rounded-lg min-w-[44px]',
+        lg: 'h-13 px-8 text-lg rounded-lg min-w-[44px]',
+        xl: 'h-16 px-10 text-xl rounded-xl min-w-[44px]',
+        icon: 'h-11 w-11 rounded-lg', // Already meets 44px minimum
       },
       rounded: {
         none: 'rounded-none',

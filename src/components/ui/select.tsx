@@ -19,6 +19,7 @@ export interface SelectProps {
   className?: string
   disabled?: boolean
   name?: string
+  id?: string
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
@@ -29,10 +30,13 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       <div className="space-y-2">
         {/* Label */}
         {label && (
-          <label className={cn(
-            'block text-sm font-medium text-black',
-            disabled && 'opacity-50'
-          )}>
+          <label 
+            htmlFor={props.id}
+            className={cn(
+              'block text-sm font-medium text-black',
+              disabled && 'opacity-50'
+            )}
+          >
             {label}
           </label>
         )}
@@ -40,14 +44,17 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         <div className="relative">
           <motion.select
             ref={ref}
+            id={props.id}
             name={name}
             value={value || ''}
             onChange={(e) => onValueChange?.(e.target.value)}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             disabled={disabled}
+            aria-invalid={error ? 'true' : 'false'}
+            aria-describedby={error ? `${props.id}-error` : undefined}
             className={cn(
-              'flex h-12 w-full appearance-none rounded-lg border-2 bg-white px-4 py-2 text-base font-medium transition-all duration-200',
+              'flex h-12 w-full appearance-none rounded-lg border-2 bg-white px-4 py-2 text-base font-medium transition-all duration-200 min-h-[44px]', // Ensure 44px minimum touch target
               'focus-visible:outline-none focus-visible:ring-0',
               'disabled:cursor-not-allowed disabled:opacity-50',
               // Default state
@@ -86,6 +93,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         <AnimatePresence mode="wait">
           {error && (
             <motion.p
+              id={`${props.id}-error`}
               className="text-sm font-medium text-black flex items-center space-x-1"
               initial={{ opacity: 0, x: -10, height: 0 }}
               animate={{ opacity: 1, x: 0, height: 'auto' }}
@@ -93,6 +101,8 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               variants={errorShakeVariants}
               animate="shake"
+              role="alert"
+              aria-live="polite"
             >
               <span className="w-4 h-4 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">
                 !

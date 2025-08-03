@@ -148,15 +148,15 @@ export default function AthletesMarketplacePage() {
 
       {/* Market Stats */}
       {marketStats && (
-        <div className="bg-white border-b border-gray-200">
+        <div className="bg-white border-b-2 border-black">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <DollarSign className="h-5 w-5 text-blue-600" />
+                <div className="p-2 bg-black rounded-lg">
+                  <DollarSign className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-sm font-medium text-black">
                     ${marketStats.total_market_cap.toLocaleString()}
                   </p>
                   <p className="text-xs text-gray-500">Total Market Cap</p>
@@ -164,21 +164,21 @@ export default function AthletesMarketplacePage() {
               </div>
               
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <Users className="h-5 w-5 text-green-600" />
+                <div className="p-2 bg-gray-800 rounded-lg">
+                  <Users className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">{marketStats.total_athletes}</p>
+                  <p className="text-sm font-medium text-black">{marketStats.total_athletes}</p>
                   <p className="text-xs text-gray-500">Active Athletes</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <BarChart3 className="h-5 w-5 text-purple-600" />
+                <div className="p-2 bg-gray-700 rounded-lg">
+                  <BarChart3 className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-sm font-medium text-black">
                     ${marketStats.total_volume_24h.toLocaleString()}
                   </p>
                   <p className="text-xs text-gray-500">24h Volume</p>
@@ -186,15 +186,15 @@ export default function AthletesMarketplacePage() {
               </div>
               
               <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-lg ${marketStats.average_price_change_24h >= 0 ? 'bg-green-100' : 'bg-red-100'}`}>
+                <div className={`p-2 rounded-lg ${marketStats.average_price_change_24h >= 0 ? 'bg-black' : 'bg-gray-600'}`}>
                   {marketStats.average_price_change_24h >= 0 ? (
-                    <TrendingUp className="h-5 w-5 text-green-600" />
+                    <TrendingUp className="h-5 w-5 text-white" />
                   ) : (
-                    <TrendingDown className="h-5 w-5 text-red-600" />
+                    <TrendingDown className="h-5 w-5 text-white" />
                   )}
                 </div>
                 <div>
-                  <p className={`text-sm font-medium ${marketStats.average_price_change_24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <p className={`text-sm font-medium ${marketStats.average_price_change_24h >= 0 ? 'text-black' : 'text-gray-600'}`}>
                     {marketStats.average_price_change_24h >= 0 ? '+' : ''}{marketStats.average_price_change_24h.toFixed(2)}%
                   </p>
                   <p className="text-xs text-gray-500">24h Change</p>
@@ -207,7 +207,7 @@ export default function AthletesMarketplacePage() {
 
       {/* Search and Filters */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
+        <div className="bg-white rounded-lg border-2 border-black p-4 mb-6 shadow-plyaz-sm">
           {/* Main Search and Sort Row */}
           <div className="flex flex-col lg:flex-row gap-4 mb-4">
             {/* Search */}

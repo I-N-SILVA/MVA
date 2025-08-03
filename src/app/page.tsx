@@ -32,25 +32,25 @@ export default function HomePage() {
       icon: <Search className="w-8 h-8" />,
       title: "Discover Athletes",
       description: "Scout and submit promising talent from around the world. Build your reputation as a top scout.",
-      color: "text-blue-600"
+      color: "text-black"
     },
     {
       icon: <Vote className="w-8 h-8" />,
       title: "Community Validation", 
       description: "Vote on athlete submissions and help validate the next generation of sports stars.",
-      color: "text-purple-600"
+      color: "text-gray-800"
     },
     {
       icon: <TrendingUp className="w-8 h-8" />,
       title: "Invest & Earn",
       description: "Back athletes early and earn returns as they progress in their careers and market value grows.",
-      color: "text-green-600"
+      color: "text-black"
     },
     {
       icon: <BarChart3 className="w-8 h-8" />,
       title: "Track Performance",
       description: "Monitor your athlete portfolio performance and watch your investments grow over time.",
-      color: "text-orange-600"
+      color: "text-gray-700"
     }
   ]
 
@@ -88,8 +88,8 @@ export default function HomePage() {
     <motion.div
       variants={pageVariants}
       initial="initial"
-      animate="in"
-      exit="out"
+      animate="animate"
+      exit="exit"
       className="min-h-screen bg-white"
     >
       {/* Hero Section */}

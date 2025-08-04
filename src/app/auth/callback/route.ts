@@ -8,6 +8,11 @@ export async function GET(request: NextRequest) {
   const next = searchParams.get('next') ?? '/dashboard'
 
   console.log('Auth callback - Origin:', origin)
+  console.log('Auth callback - Environment:', {
+    NODE_ENV: process.env.NODE_ENV,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    VERCEL_URL: process.env.VERCEL_URL
+  })
   console.log('Auth callback - Headers:', {
     host: request.headers.get('host'),
     forwardedHost: request.headers.get('x-forwarded-host'),
@@ -31,28 +36,11 @@ export async function GET(request: NextRequest) {
         // Development environment
         redirectUrl = `${origin}${next}`
         console.log('Development redirect:', redirectUrl)
-      } else if (forwardedHost) {
-        // Production with load balancer (Vercel)
-        const protocol = forwardedProto || 'https'
-        redirectUrl = `${protocol}://${forwardedHost}${next}`
-        console.log('Production redirect (forwarded):', redirectUrl)
-      } else if (host && !host.includes('localhost')) {
-        // Production fallback using host header
-        redirectUrl = `https://${host}${next}`
-        console.log('Production redirect (host):', redirectUrl)
       } else {
-        // Ultimate fallback - use environment variable if available
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL
-        if (appUrl && !appUrl.includes('localhost')) {
-          redirectUrl = `${appUrl}${next}`
-          console.log('Production redirect (env):', redirectUrl)
-        } else {
-          // Last resort - use origin but ensure it's not localhost in production
-          redirectUrl = origin.includes('localhost') && !isLocalEnv 
-            ? `${getProductionUrl()}${next}` 
-            : `${origin}${next}`
-          console.log('Fallback redirect:', redirectUrl)
-        }
+        // FORCE production URL - prevent any localhost redirects
+        const productionUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://mva-chi.vercel.app'
+        redirectUrl = `${productionUrl}${next}`
+        console.log('FORCED Production redirect:', redirectUrl)
       }
 
       return NextResponse.redirect(redirectUrl)

@@ -1,4 +1,5 @@
 import { AuthForm } from '@/components/auth/AuthForm'
+import { EnvDebug } from '@/components/debug/EnvDebug'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -67,6 +68,9 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      
+      {/* Debug component - remove after fixing redirect issue */}
+      <EnvDebug />
     </div>
   )
 }
